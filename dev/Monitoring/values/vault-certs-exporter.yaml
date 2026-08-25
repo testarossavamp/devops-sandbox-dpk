@@ -1,0 +1,9 @@
+log-level: debug
+port: 9333
+fetch_interval: 5s
+refresh_interval: 5s
+batch_size_percent: 1
+request_limit: 20
+request_limit_burst: 20
+pki: []
+kv: []

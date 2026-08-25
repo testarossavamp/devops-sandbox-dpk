@@ -1,0 +1,20 @@
+module "dpk_k8s_cluster" {
+  enable_k8s_public_ip    = var.enable_k8s_public_ip
+  source                  = "terralist-app01.internal.infra.dpkapp.ru/kamaz/k8s/local"
+  version                 = "0.2.10"
+  domain_postfix          = local.init.domain_postfix
+  env_name                = local.init.env_name
+  folder_id               = local.init.folder_id
+  project_name            = local.init.project_name
+  k8s_multimaster_enabled = local.k8s_multimaster_enabled
+  k8s_network_id          = local.init.network_id
+  k8s_cluster_subnet_ids  = local.k8s_cluster_subnet_ids
+  k8s_cluster_ipv4_range  = var.k8s_cluster_ipv4_range
+  k8s_cluster_nodes_count = var.k8s_cluster_nodes_count
+  k8s_network_zones       = var.k8s_network_zones
+  k8s_release_channel     = var.k8s_release_channel
+  k8s_service_ipv4_range  = var.k8s_service_ipv4_range
+  k8s_version             = var.k8s_version
+  k8s_cluster_node_cores  = "4"
+  k8s_cluster_node_memory = "8"
+}

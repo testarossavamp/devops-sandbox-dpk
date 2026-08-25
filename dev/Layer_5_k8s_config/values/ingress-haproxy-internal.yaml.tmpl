@@ -1,0 +1,46 @@
+controller:
+  image:
+    repository: ${nexus_registry}/haproxytech/kubernetes-ingress
+    tag: "${ingress_image_version}"
+  replicaCount: 1
+
+  ingressClassResource:
+    name: haproxy-internal
+    default: false
+  ingressClass: haproxy-internal
+
+  extraEnvs:
+    - name: TZ
+      value: "Europe/Moscow"
+
+  extraArgs:
+     - --configmap-errorfiles ingress-haproxy-internal/ingress-haproxy-errorfiles
+  config:
+    cr-global: ingress-haproxy-internal/ingress-haproxy-global
+    cr-defaults: ingress-haproxy-internal/ingress-haproxy-defaults
+    frontend-config-snippet: |
+      http-response return status 404 errorfile /etc/haproxy/errorfiles/404 if { status 404 }
+
+  service:
+    type: LoadBalancer
+    annotations:
+        yandex.cloud/load-balancer-type: internal
+        # yandex.cloud/subnet-id:
+    loadBalancerIP: "${load_balancer_ip}"
+
+  logging:
+    traffic:
+      address:  "stdout"
+      format:   "raw"
+      facility: "daemon"
+
+  resources:
+    requests:
+      cpu: 200m
+      memory: 400Mi
+
+crdjob:
+  resources:
+    requests:
+      cpu: 200m
+      memory: 400Mi
